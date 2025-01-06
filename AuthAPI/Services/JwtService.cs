@@ -1,7 +1,6 @@
-﻿using AuthAPI.Dtos.Configurations;
+﻿using AuthAPI.Interfaces.Configurations;
 using AuthAPI.Interfaces.Services;
 using AuthAPI.Models;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,18 +10,18 @@ namespace AuthAPI.Services;
 
 public class JwtService : IJwtService
 {
-    private readonly JwtOptionsDto _jwtOptions;
+    private readonly IJwtOptionsConfig _jwtConfigs;
 
-    public JwtService(IOptions<JwtOptionsDto> jwtOptions)
-    { 
-        _jwtOptions = jwtOptions.Value;
+    public JwtService(IJwtOptionsConfig jwtConfigs)
+    {
+        _jwtConfigs = jwtConfigs;
     }
 
     public string GenerateJwt(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
-        var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtConfigs.GetSecret());
 
         var claims = PrepareClaims(user);
 
@@ -47,8 +46,8 @@ public class JwtService : IJwtService
     {
         return new SecurityTokenDescriptor
         {
-            Issuer = _jwtOptions.Issuer,
-            Audience = _jwtOptions.Audience,
+            Issuer = _jwtConfigs.GetIssuer(),
+            Audience = _jwtConfigs.GetAudience(),
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.Now.AddDays(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

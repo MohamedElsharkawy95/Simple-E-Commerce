@@ -1,8 +1,10 @@
 using AuthAPI.Data;
 using AuthAPI.Dtos.Configurations;
+using AuthAPI.Interfaces.Configurations;
 using AuthAPI.Interfaces.Services;
 using AuthAPI.Models;
 using AuthAPI.Services;
+using AuthAPI.Utilities.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,7 +69,8 @@ void ApplyMigrations()
 void ConfigureServices(IServiceCollection services)
 {
     services.AddScoped<IAuthService, AuthService>();
-    services.AddScoped<IJwtService,  JwtService>();
+    services.AddScoped<IJwtService, JwtService>();
+    services.AddScoped<IJwtOptionsConfig, JwtConfigs>();
 }
 
 void ConfigureConfigurations(IServiceCollection services)
