@@ -70,7 +70,7 @@ void ConfigureServices(IServiceCollection services)
 {
     services.AddScoped<IAuthService, AuthService>();
     services.AddScoped<IJwtService, JwtService>();
-    services.AddScoped<IJwtOptionsConfig, JwtConfigs>();
+    services.AddScoped<IJwtConfig, JwtConfigs>();
 }
 
 void ConfigureConfigurations(IServiceCollection services)

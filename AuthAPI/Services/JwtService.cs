@@ -10,9 +10,9 @@ namespace AuthAPI.Services;
 
 public class JwtService : IJwtService
 {
-    private readonly IJwtOptionsConfig _jwtConfigs;
+    private readonly IJwtConfig _jwtConfigs;
 
-    public JwtService(IJwtOptionsConfig jwtConfigs)
+    public JwtService(IJwtConfig jwtConfigs)
     {
         _jwtConfigs = jwtConfigs;
     }

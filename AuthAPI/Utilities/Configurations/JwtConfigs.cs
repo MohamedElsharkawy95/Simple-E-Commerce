@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace AuthAPI.Utilities.Configurations;
 
-public class JwtConfigs(IOptions<JwtOptionsDto> _jwtOptions) : IJwtOptionsConfig
+public class JwtConfigs(IOptions<JwtOptionsDto> _jwtOptions) : IJwtConfig
 {
     private readonly JwtOptionsDto jwtOptions = _jwtOptions.Value;
 

@@ -1,6 +1,6 @@
 ﻿namespace AuthAPI.Interfaces.Configurations;
 
-public interface IJwtOptionsConfig
+public interface IJwtConfig
 {
     string GetSecret();
     string GetIssuer();
