@@ -38,7 +38,7 @@ public class AuthController : ControllerBase
         return Ok(responseDto);
     }
 
-    [HttpPost("AssignRole")]
+    [HttpPost("assign-role")]
     public async Task<ActionResult<ResponseDto>> AssignRole([FromBody] AssignRoleRequest request)
     {
         await _authService.AssignRole(request);

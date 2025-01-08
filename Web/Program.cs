@@ -46,11 +46,16 @@ void ConfigureServices(IServiceCollection services)
 
     //configure coupon service to have access on http client
     services.AddHttpClient<ICouponService, CouponService>();
+    services.AddHttpClient<IAuthService,  AuthService>();
 
-    services.AddScoped<IBaseService, BaseService>();
-    services.AddScoped<ICouponService, CouponService>();
+    //Register Configs
     services.AddScoped<ICouponUrlConfigs, CouponUrlConfigs>(); 
     services.AddScoped<IAuthUrlConfigs, AuthUrlConfigs>();
+
+    //Register Business Services
+    services.AddScoped<IBaseService, BaseService>();
+    services.AddScoped<ICouponService, CouponService>();
+    services.AddScoped<IAuthService, AuthService>();
 }
 
 void ConfigureConfigurations(IServiceCollection services)
