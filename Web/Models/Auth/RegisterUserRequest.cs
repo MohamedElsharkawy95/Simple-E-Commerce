@@ -16,4 +16,6 @@ public class RegisterUserRequest
 
     [Required]
     public required string Phone { get; set; }
+
+    public string? Role { get; set; }
 }
