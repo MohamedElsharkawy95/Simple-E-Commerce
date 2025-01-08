@@ -4,7 +4,6 @@ using AuthAPI.Exceptions;
 using AuthAPI.Interfaces.Services;
 using AuthAPI.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Runtime.ConstrainedExecution;
 
 namespace AuthAPI.Services;
 
@@ -88,12 +87,32 @@ public class AuthService : IAuthService
             }
             else
             {
-                throw new UserFailedCreationException(result.Errors.FirstOrDefault().Description);
+                throw new UserCreationFailedException(result.Errors.FirstOrDefault().Description);
             }
         }
         catch (Exception ex)
         {
-            throw new UserFailedCreationException(ex.Message);
+            throw new UserCreationFailedException(ex.Message);
+        }
+    }
+
+    public async Task AssignRole(AssignRoleRequest request)
+    {
+        User? user = _dbContext.Users.FirstOrDefault(u => u.Email!.ToLower() == request.Email.ToLower());
+
+        if (user == null) { throw new UserNotFoundException(request.Email); }
+
+        var isRoleExists = await _roleManager.RoleExistsAsync(request.RoleName);
+
+        if (!isRoleExists)
+        {
+            var roleCreationResult = await _roleManager.CreateAsync(new IdentityRole { Name = request.RoleName, NormalizedName = request.RoleName.ToUpper() });
+
+            if (!roleCreationResult.Succeeded) { throw new RoleCreationFailedException(roleCreationResult.Errors.FirstOrDefault()?.Description); }
+
+            var roleAssigningResult = await _userManager.AddToRoleAsync(user, request.RoleName);
+
+            if (!roleAssigningResult.Succeeded) { throw new AssignRoleFailedException(request.RoleName, request.Email); }
         }
     }
 }

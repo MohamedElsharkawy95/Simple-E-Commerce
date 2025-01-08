@@ -1,6 +1,6 @@
-﻿namespace Web.Models.Configurations.Coupons;
+﻿namespace Web.Models.Configurations.Auth;
 
-public class CouponUrlDto
+public class AuthUrlDto
 {
     public string BaseUrl { get; set; } = string.Empty;
     public string Url { get; set; } = string.Empty;

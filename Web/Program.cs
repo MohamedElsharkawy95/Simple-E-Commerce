@@ -1,5 +1,9 @@
+using Web.Interfaces.Configurations;
 using Web.Interfaces.Services;
+using Web.Interfaces.Services.Configurations;
 using Web.Models.Configurations;
+using Web.Models.Configurations.Auth;
+using Web.Models.Configurations.Coupons;
 using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,10 +49,15 @@ void ConfigureServices(IServiceCollection services)
 
     services.AddScoped<IBaseService, BaseService>();
     services.AddScoped<ICouponService, CouponService>();
+    services.AddScoped<ICouponUrlConfigs, CouponUrlConfigs>(); 
+    services.AddScoped<IAuthUrlConfigs, AuthUrlConfigs>();
 }
 
 void ConfigureConfigurations(IServiceCollection services)
 {
-    var ServiceUrlsSection = builder.Configuration.GetSection("ServiceUrls");
-    services.Configure<ServiceUrlDto>(ServiceUrlsSection);
+    var couponsUrlsSection = builder.Configuration.GetSection("ServiceUrls:CouponsUrl");
+    services.Configure<CouponUrlDto>(couponsUrlsSection);
+
+    var authUrlsSection = builder.Configuration.GetSection("ServiceUrls:AuthUrl");
+    services.Configure<AuthUrlDto>(authUrlsSection);
 }

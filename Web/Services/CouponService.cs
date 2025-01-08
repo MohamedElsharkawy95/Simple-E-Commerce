@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Options;
-using System;
+﻿using Web.Interfaces.Configurations;
 using Web.Interfaces.Services;
 using Web.Models;
-using Web.Models.Configurations;
 using Web.Models.Coupons;
 
 namespace Web.Services;
@@ -10,12 +8,12 @@ namespace Web.Services;
 public class CouponService : ICouponService
 {
     private readonly IBaseService _baseService;
-    private readonly IOptions<ServiceUrlDto> _options;
+    private readonly ICouponUrlConfigs _couponUrlConfigs;
 
-    public CouponService(IBaseService baseService, IOptions<ServiceUrlDto> options)
+    public CouponService(IBaseService baseService, ICouponUrlConfigs couponUrlConfigs)
     {
         _baseService = baseService;
-        _options = options;
+        _couponUrlConfigs = couponUrlConfigs;
     }
 
     public async Task<ResponseDto?> CreateCouponAsync(CouponDto coupon)
@@ -23,7 +21,7 @@ public class CouponService : ICouponService
         ResponseDto response = await _baseService.SendAsync(new RequestDto
         {
             ApiType = Utilities.Enums.ApiType.POST,
-            Url = _options.Value.CouponsUrl?.BaseUrl + _options.Value.CouponsUrl?.Url,
+            Url = _couponUrlConfigs.GetBaseUrl() + _couponUrlConfigs.GetCouponUrl(),
             Data = coupon
         });
         return response;
@@ -34,7 +32,7 @@ public class CouponService : ICouponService
         ResponseDto response = await _baseService.SendAsync(new RequestDto
         {
             ApiType = Utilities.Enums.ApiType.DELETE,
-            Url = _options.Value.CouponsUrl?.BaseUrl + _options.Value.CouponsUrl?.Url + id
+            Url = _couponUrlConfigs.GetBaseUrl() + _couponUrlConfigs.GetCouponUrl() + "/" + id
         });
         return response;
     }
@@ -44,7 +42,7 @@ public class CouponService : ICouponService
         ResponseDto response = await _baseService.SendAsync(new RequestDto
         {
             ApiType = Utilities.Enums.ApiType.GET,
-            Url = _options.Value.CouponsUrl?.BaseUrl + _options.Value.CouponsUrl?.Url
+            Url = _couponUrlConfigs.GetBaseUrl() + _couponUrlConfigs.GetCouponUrl()
         });
         return response;
     }
@@ -54,7 +52,7 @@ public class CouponService : ICouponService
         ResponseDto response = await _baseService.SendAsync(new RequestDto
         {
             ApiType = Utilities.Enums.ApiType.GET,
-            Url = _options.Value.CouponsUrl?.BaseUrl + _options.Value.CouponsUrl?.Url + "GetByCode" + code
+            Url = _couponUrlConfigs.GetBaseUrl() + _couponUrlConfigs.GetCouponUrl() + "GetByCode" + code
         });
         return response;
     }
@@ -64,7 +62,7 @@ public class CouponService : ICouponService
         ResponseDto response = await _baseService.SendAsync(new RequestDto
         {
             ApiType = Utilities.Enums.ApiType.GET,
-            Url = _options.Value.CouponsUrl?.BaseUrl + _options.Value.CouponsUrl?.Url + "/" + id
+            Url = _couponUrlConfigs.GetBaseUrl() + _couponUrlConfigs.GetCouponUrl() + "/" + id
         });
         return response;
     }
@@ -74,7 +72,7 @@ public class CouponService : ICouponService
         ResponseDto response = await _baseService.SendAsync(new RequestDto
         {
             ApiType = Utilities.Enums.ApiType.PUT,
-            Url = _options.Value.CouponsUrl?.BaseUrl + _options.Value.CouponsUrl?.Url,
+            Url = _couponUrlConfigs.GetBaseUrl() + _couponUrlConfigs.GetCouponUrl(),
             Data = coupon
         });
         return response;

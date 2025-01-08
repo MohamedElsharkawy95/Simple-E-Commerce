@@ -19,7 +19,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<ResponseDto>> Register([FromBody] RegisterUserRequest request)
     {
-        UserResponse user = await _authService.Regiser(request);
+        UserResponse? user = await _authService.Regiser(request);
         ResponseDto responseDto = new ResponseDto
         {
             Result = user
@@ -34,6 +34,17 @@ public class AuthController : ControllerBase
         ResponseDto responseDto = new ResponseDto
         {
             Result = loginResponse
+        };
+        return Ok(responseDto);
+    }
+
+    [HttpPost("AssignRole")]
+    public async Task<ActionResult<ResponseDto>> AssignRole([FromBody] AssignRoleRequest request)
+    {
+        await _authService.AssignRole(request);
+        ResponseDto responseDto = new ResponseDto
+        {
+            Result = true
         };
         return Ok(responseDto);
     }
