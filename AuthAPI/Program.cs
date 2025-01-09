@@ -79,6 +79,9 @@ void ConfigureServices(IServiceCollection services)
 
 void ConfigureConfigurations(IServiceCollection services)
 {
-    var ServiceUrlsSection = builder.Configuration.GetSection("ApiSettings:JwtOptions");
-    services.Configure<JwtOptionsDto>(ServiceUrlsSection);
+    services
+    .AddOptions<JwtOptionsDto>()
+    .BindConfiguration("ApiSettings:JwtOptions")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 }

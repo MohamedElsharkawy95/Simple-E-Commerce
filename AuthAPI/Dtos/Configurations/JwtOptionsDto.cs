@@ -1,8 +1,15 @@
-﻿namespace AuthAPI.Dtos.Configurations;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuthAPI.Dtos.Configurations;
 
 public class JwtOptionsDto
 {
-    public string Secret { get; set; } = string.Empty;
-    public string Issuer { get; set; } = string.Empty;
-    public string Audience { get; set; } = string.Empty;
+    [Required]
+    public required string Secret { get; set; }
+
+    [Required]
+    public required string Issuer { get; set; }
+
+    [Required]
+    public required string Audience { get; set; }
 }
