@@ -1,5 +1,6 @@
 using AuthAPI.Data;
 using AuthAPI.Dtos.Configurations;
+using AuthAPI.Filters;
 using AuthAPI.Interfaces.Configurations;
 using AuthAPI.Interfaces.Services;
 using AuthAPI.Models;
@@ -24,7 +25,10 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 ConfigureServices(builder.Services);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ProblemDetailsExceptionFilter>();
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
