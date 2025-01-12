@@ -14,17 +14,20 @@ public class AuthService : IAuthService
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IJwtService _jwtService;
+    private readonly ILogger<AuthService> _logger;
 
 
     public AuthService(AppDbContext dbContext,
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
-        IJwtService jwtService)
+        IJwtService jwtService,
+        ILogger<AuthService> logger)
     {
         _dbContext = dbContext;
         _userManager = userManager;
         _roleManager = roleManager;
         _jwtService = jwtService;
+        _logger = logger;
     }
 
     public async Task<LoginResponse> Login(LoginRequest request)
@@ -72,10 +75,10 @@ public class AuthService : IAuthService
             PhoneNumber = request.Phone
         };
 
-
         var result = await _userManager.CreateAsync(user, request.Password);
         if (result.Succeeded)
         {
+            _logger.LogInformation("user created successfully");
             User createdUser = _dbContext.Users.First(u => u.UserName == user.Email);
             return new UserResponse
             {

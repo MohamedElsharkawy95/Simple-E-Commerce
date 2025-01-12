@@ -4,10 +4,10 @@ namespace AuthAPI.Exceptions;
 
 public class BaseApplicationException : ApplicationException
 {
-    public BaseApplicationException(ProblemDetails problemDetails) : base(problemDetails.Title)
+    public ProblemDetails Problem { get; }
+
+    public BaseApplicationException(ProblemDetails problemDetails)
     {
         Problem = problemDetails;
     }
-
-    public ProblemDetails Problem { get; }
 }
